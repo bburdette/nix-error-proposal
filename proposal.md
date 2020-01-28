@@ -1,11 +1,31 @@
+# overview
 
-The 3 type of nix errors.
+We want to improve nix errors - the messages themselves, their context, and formatting.
+
+I've gone through the nix github issues, and come up with about 90 candidates for improved errors.
+Its likely there are many more improvements to be made, but these are some representative examples 
+that point at the kinds of changes that would be appropriate.
+
+Here's a spreadsheet with the candidate errors at the top:
+https://docs.google.com/spreadsheets/d/1YeMT8nQPaMaZWLKE0IqVY5o8XvfiNbhuv1TWWZ0VwJk/edit#gid=1201267462
+
+I've put these into the following four classes:
+  * *language*: syntax errors and the like in the nix language. (13 issues)
+  * *builtin*: errors that occur in builtin functions. (6 issues)
+  * *tool*: errors returned by tools like nix-build or nix-copy-clojure. (65 issues)
+  * *builder*: errors that occur in a builder, like bash. (2 issues) 
+
+Before revising or adding the error messages themselves, I propose working up a generate error 
+format.  [This article](https://elm-lang.org/news/compiler-errors-for-humans) outlines the elm error message approach.
 
 # class 1:  nix language errors.
 
-- most like elm errors.
+https://github.com/NixOS/nix/issues/3088
+https://github.com/NixOS/nix/issues/3063
+
+- nix language errors are the most similar to elm errors.
 - use error template as below.
-- error message catalog.
+- build an error message catalog.
   collection of *.nix snippets that produce errors.
 
 Language error template:
@@ -19,69 +39,71 @@ Language error template:
 
       hint about how to fix the problem, perhaps with text indicating the problem:
         which occurred at this word: <of>
+        
+# class 2: builtin errors.
 
-# class 2:  tool error messages.
+example:  https://github.com/NixOS/nix/issues/2431
 
-- line/column not appropriate, as much.
+These are errors that occur in the builtin functions.  The error format is similar to the language
+errors, but the errors themselves may come from software external to nix, like git.
+We may want to detect and interpret errors that these programs return in the context of nix usage.
 
-- much more varied requirements for producing the messages.
-  - detecting problem conditions. 
+      ---<Error Type>----------------------------- <filename>
+
+      general error text, or error returned by an external program.  What happened?
+          fatal: not a tree object
+          error: program 'git' failed with exit code 128
+
+      <line number> builtin.function in nix code where error occurred, with color underlining.
+                    ^^^^^^^^^^^^^^^^
+      hint about how to fix the problem, perhaps with text indicating the problem:
+        This is likely because of an invalid rev, or a rev that is not in the specified ref.
+        fetchGit fetches the entire history of the specified ref, and the specified rev must be an ancestor of that.
+
+
+# class 3:  tool error messages.
+
+warnings and errors from nix tools like nix-copy-closure, nix-collect-garbage, nix-instantiate, etc.
+
+most of the tool issues are requests for warnings when certain conditions hold.
+
+warning example: https://github.com/NixOS/nix/issues/1492
+
+error example: https://github.com/NixOS/nix/issues/765
+
+- tools may evaluate nix expressions, in which case the errors will be in the language format.
+- Tool errors in the nix issues often require special code changes to detect problems.
+
+warning mode.
 
 error template:
 
---<Error type>------------------------------- <tool name>
+      --<Error type>------------------------------- <tool name>
 
-  general error text.
-  
-  tool command line args.
+      general error text.
+      
+      tool command line, ie nix-collect-garbage -d
 
-  proposed solution?
+      proposed solution?
 
-  docs link.
-
-# class 3:  bash error messages.
-
-it would be great to have line-by-line annotation for the tool.
-  but, at least we could have the calling nix file and build phase.
-
-here's an example: 
-
-    bburdette@BB-5520:~/code/pdfq/elm$ nix-build parcel2.nix 
-    these derivations will be built:
-      /nix/store/m2p6lahccxnkvxv7yiwz37i8blqgdbls-myproject-node-packages.drv
-      /nix/store/ilhkpii2f8ai900vnzcmzb53an0dqz8a-myproject-frontend.drv
-    building '/nix/store/m2p6lahccxnkvxv7yiwz37i8blqgdbls-myproject-node-packages.drv'...
-    unpacking sources
-    patching sources
-    configuring
-    mv: cannot copy a directory, '/build', into itself, '/build/temp'
-    builder for '/nix/store/m2p6lahccxnkvxv7yiwz37i8blqgdbls-myproject-node-packages.drv' failed with exit code 1
-    cannot build derivation '/nix/store/ilhkpii2f8ai900vnzcmzb53an0dqz8a-myproject-frontend.drv': 1 dependencies couldn't be built
-    error: build of '/nix/store/ilhkpii2f8ai900vnzcmzb53an0dqz8a-myproject-frontend.drv' failed
-
-where is 'mv' being called?  from what nix file? in what stage?
-  ok it was this myproject-node-packages
-
-error context stack.
-  in bash, we get:
-    chmod: changing permissions of '/nix/store/l8dyvv1s85sfpw672f64l9ynx3adx9mh-source/server/': Operation not permitted
-  how about have chmod get called by something that will print both the chmod error and the context around it.
-    - why is chmod being called?
-    - if you get this error, what should you do?
-    - where should you look in the docs to get help?
-    bburdette@BB-5520:~/code/pdfq/nixpkg$ sudo ./test.sh 
-      [sudo] password for bburdette: 
-      these derivations will be built:
-        /nix/store/pvy84fi7sp1l672s4iijkq4srrism7ic-pdfq-1.0-vendor.drv
-        /nix/store/gal5wxp40cwsayghisxajv3l70qv9n5w-pdfq-1.0.drv
-      building '/nix/store/pvy84fi7sp1l672s4iijkq4srrism7ic-pdfq-1.0-vendor.drv'...
-      unpacking sources
-      unpacking source archive /nix/store/l8dyvv1s85sfpw672f64l9ynx3adx9mh-source
-      source root is /nix/store/l8dyvv1s85sfpw672f64l9ynx3adx9mh-source/server/
-      chmod: changing permissions of '/nix/store/l8dyvv1s85sfpw672f64l9ynx3adx9mh-source/server/': Operation not permitted
-      chmod: changing permissions of '/nix/store/l8dyvv1s85sfpw672f64l9ynx3adx9mh-source/server/shell.nix': Operation not permitted
-      chmod: changing permissions of '/nix/store/l8dyvv1s85sfpw672f64l9ynx3adx9mh-source/server/config.toml': Operation not permitted
-      chmod: changing permissions of '/nix/store/l8dyvv1s85sfpw672f64l9ynx3adx9mh-source/server/run.sh': Operation not permitted
+      docs link.
 
 
-  
+Specific examples!
+
+# class 4:  bash/builder errors.
+
+bash is by far the most common builder.  When there is problem in a bash script, ideally we'd 
+like to report the file and line number for that problem.  This isn't something that's natural for bash, but
+you can get pretty close with *set -x* together with setting a $PS4 environment variable. 
+
+For an individual package, you can enable this with by adding these attributes:
+
+  NIX_DEBUG=6; 
+  PS4="\${BASH_SOURCE}:\${LINENO} ";
+ 
+That's great if the problem is in your top level package, but what if its a few packages down?
+You'd have to clone nixpkgs and systematically add these flags to every package in the chain
+of errors.  I propose enabling these flags in all packages with a sufficient verbosity level.
+
+ 
