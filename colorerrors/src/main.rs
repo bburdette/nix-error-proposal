@@ -38,7 +38,7 @@ fn print_error(einfo: &ErrInfo) {
         "------------------------".blue(),
         einfo.tool_name.blue()
     );
-    println!("");
+    // println!("");
     // filename
     match &einfo.nix_file {
         Some(fname) => {
@@ -67,6 +67,7 @@ fn print_error(einfo: &ErrInfo) {
     }
     // hint
     println!("{}", einfo.hint);
+    println!("");
 }
 
 // fn print_error(err_name: &str, tool_name &str, general) {
