@@ -86,20 +86,6 @@ fn main() {
     // let y: String = x; // error!
     // TADAA!
 
-    let generic = ErrInfo {
-        level: ErrLevel::Error,
-        err_name: "error name".to_string(),
-        tool_name: "nix tool name".to_string(),
-        description: "general error description".to_string(),
-        nix_file: Some("myfile.nix".to_string()),
-        err_line: Some(ErrLine {
-            line_no: 7,
-            column_range: Some((22, 14)),
-            loc: "line of code where the error occurred".to_string(),
-        }),
-        hint: "error hint".to_string().green(),
-    };
-
     /*      ***<Error Name>***************************** <nix tool name>
           error in file: <nix filename>
 
@@ -112,13 +98,108 @@ fn main() {
             "underlining" symbol was not found.
 
     */
-    // struct ErrLine {
-    //   line_no: i32,
-    //   column_range: Option<(usize,usize)>,
-    //   loc: String,
-    // }
+     let generic = ErrInfo {
+        level: ErrLevel::Error,
+        err_name: "error name".to_string(),
+        tool_name: "nix tool name".to_string(),
+        description: "general error description".to_string(),
+        nix_file: Some("myfile.nix".to_string()),
+        err_line: Some(ErrLine {
+            line_no: 7,
+            column_range: Some((22, 14)),
+            loc: "line of code where the error occurred".to_string(),
+        }),
+        hint: "error hint".to_string().white(),
+    };
+
+/*
+        --- Attribute Name ------------------------------- nix-build
+        warning in file: n/a
+      
+	warning: Attribute format is incorrect.  Only letters a-z, A-Z, 0-9, or one of "+_-" are allowed.
+
+	1: { "hi.there" = (import <nixpkgs> {}).hello; }
+	      ^^^^^^^^
+        The symbol "hi.there" doesn't satisfy attribute naming requirements.  It will be ignored.
+*/
+
+    let langwarning = ErrInfo {
+        level: ErrLevel::Warning,
+        err_name: "Attribute Name".to_string(),
+        tool_name: "nix-build".to_string(),
+        description: "Attribute format is incorrect.  Only letters a-z, A-Z, 0-9, or one of \"+_-\" are allowed.".to_string(),
+        nix_file: None, 
+        err_line: Some(ErrLine {
+            line_no: 1,
+            column_range: Some((2,8)),
+            loc: "{ \"hi.there\" = (import <nixpkgs> {}).hello; }".to_string(),
+        }),
+        hint: format!("The symbol {} doesn't satisfy attribute naming requirements.  It will be ignored.", "hi.there".blue()).to_string().white(),
+    };
+/*
+        --- String Error ------------------------------- nix-build
+        error in file: n/a
+	
+	error: Invalid escape character.  Only \t \n \r \" \\ are allowed.
+	
+	1: { foo = "test \e"; }
+	                 ^^
+        "\e" is an invalid escape character.
+*/
+    let langerror =ErrInfo {
+        level: ErrLevel::Error,
+        err_name: "String Error".to_string(),
+        tool_name: "nix-build".to_string(),
+        description: "Invalid escape character.  Only \\t \\n \\r \\\\ are allowed.".to_string(),
+        nix_file: None, 
+        err_line: Some(ErrLine {
+            line_no: 1,
+            column_range: Some((13,2)),
+            loc: "{ foo = \"test \\e\"; }".to_string(),
+        }),
+        hint: format!("{} is an invalid escape character for a nix string.", "\\e".blue()).to_string().white(),
+    };
+
+/*
+      ***<fetchGit>***************************** <nix>
+      error in file: n/a
+      
+      builtin.fetchGit: git returned an error.
+
+      1: builtin.fetchGit {
+         ^^^^^^^^^^^^^^^^
+
+      fetchGit takes 3 arguments in a nix expression:
+        { url
+        , rev
+        , ref       
+        }
+        If ref
+        */
+
+    let builtinerror =ErrInfo {
+        level: ErrLevel::Error,
+        err_name: "fetchGit Error".to_string(),
+        tool_name: "nix build".to_string(),
+        description: "builtin.fetchGit returned an error.".to_string(),
+        nix_file: Some("default.nix".to_string()),
+        err_line: Some(ErrLine {
+            line_no: 101,
+            column_range: Some((1,16)),
+            loc: "builtin.fetchGit {".to_string(),
+        }),
+        hint: "fetchGit takes 3 arguments in a nix expression:
+        { url
+        , rev
+        , ref       
+        }
+Be sure your specified rev (commit) is contained in the ref (branch).".to_string().white(),
+    };
 
     print_error(&generic);
+    print_error(&langwarning);
+    print_error(&langerror);
+    print_error(&builtinerror);
 
     // println!("{} {} !", "it".green(), "works".blue().bold());
 }
