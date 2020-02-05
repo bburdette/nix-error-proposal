@@ -24,18 +24,30 @@ enum ErrLevel {
 }
 
 fn print_error(einfo: &ErrInfo) {
+    let errwidth: usize = 80;
+
     // level
     let lstring = match einfo.level {
         ErrLevel::Error => "error:".red(),
         ErrLevel::Warning => "warning:".yellow(),
     };
+
+    let dashwidth = {
+        let ndl = lstring.len() + 3 + einfo.err_name.len() + einfo.tool_name.len();
+        if ndl > errwidth - 3 {
+            3
+        } else {
+            80 - ndl
+        }
+    };
+
     // divider
     println!(
         "{} {} {} {} {}",
         lstring,
         "---".blue(),
         einfo.err_name.blue(),
-        "------------------------".blue(),
+        "-".repeat(dashwidth).blue(),
         einfo.tool_name.blue()
     );
     // println!("");
@@ -99,7 +111,7 @@ fn main() {
             "underlining" symbol was not found.
 
     */
-     let generic = ErrInfo {
+    let generic = ErrInfo {
         level: ErrLevel::Error,
         err_name: "error name".to_string(),
         tool_name: "nix tool name".to_string(),
@@ -113,23 +125,23 @@ fn main() {
         hint: "error hint".to_string().white(),
     };
 
-/*
-        --- Attribute Name ------------------------------- nix-build
-        warning in file: n/a
-      
-	warning: Attribute format is incorrect.  Only letters a-z, A-Z, 0-9, or one of "+_-" are allowed.
+    /*
+            --- Attribute Name ------------------------------- nix-build
+            warning in file: n/a
 
-	1: { "hi.there" = (import <nixpkgs> {}).hello; }
-	      ^^^^^^^^
-        The symbol "hi.there" doesn't satisfy attribute naming requirements.  It will be ignored.
-*/
+        warning: Attribute format is incorrect.  Only letters a-z, A-Z, 0-9, or one of "+_-" are allowed.
+
+        1: { "hi.there" = (import <nixpkgs> {}).hello; }
+              ^^^^^^^^
+            The symbol "hi.there" doesn't satisfy attribute naming requirements.  It will be ignored.
+    */
 
     let langwarning = ErrInfo {
         level: ErrLevel::Warning,
         err_name: "Attribute Name".to_string(),
         tool_name: "nix-build".to_string(),
         description: "Attribute format is incorrect.  Only letters a-z, A-Z, 0-9, or one of \"+_-\" are allowed.".to_string(),
-        nix_file: None, 
+        nix_file: None,
         err_line: Some(ErrLine {
             line_no: 1,
             column_range: Some((2,8)),
@@ -137,48 +149,54 @@ fn main() {
         }),
         hint: format!("The symbol {} doesn't satisfy attribute naming requirements.  It will be ignored.", "hi.there".blue()).to_string().white(),
     };
-/*
-        --- String Error ------------------------------- nix-build
-        error in file: n/a
-	
-	error: Invalid escape character.  Only \t \n \r \" \\ are allowed.
-	
-	1: { foo = "test \e"; }
-	                 ^^
-        "\e" is an invalid escape character.
-*/
-    let langerror =ErrInfo {
+    /*
+            --- String Error ------------------------------- nix-build
+            error in file: n/a
+
+        error: Invalid escape character.  Only \t \n \r \" \\ are allowed.
+
+        1: { foo = "test \e"; }
+                         ^^
+            "\e" is an invalid escape character.
+    */
+    
+    let langerror = ErrInfo {
         level: ErrLevel::Error,
         err_name: "String Error".to_string(),
         tool_name: "nix-build".to_string(),
         description: "Invalid escape character.  Only \\t \\n \\r \\\\ are allowed.".to_string(),
-        nix_file: None, 
+        nix_file: None,
         err_line: Some(ErrLine {
             line_no: 1,
-            column_range: Some((13,2)),
+            column_range: Some((13, 2)),
             loc: "{ foo = \"test \\e\"; }".to_string(),
         }),
-        hint: format!("{} is an invalid escape character for a nix string.", "\\e".blue()).to_string().white(),
+        hint: format!(
+            "{} is an invalid escape character for a nix string.",
+            "\\e".blue()
+        )
+        .to_string()
+        .white(),
     };
 
-/*
-      ***<fetchGit>***************************** <nix>
-      error in file: n/a
-      
-      builtin.fetchGit: git returned an error.
+    /*
+    ***<fetchGit>***************************** <nix>
+    error in file: n/a
 
-      1: builtin.fetchGit {
-         ^^^^^^^^^^^^^^^^
+    builtin.fetchGit: git returned an error.
 
-      fetchGit takes 3 arguments in a nix expression:
-        { url
-        , rev
-        , ref       
-        }
-        If ref
-        */
+    1: builtin.fetchGit {
+       ^^^^^^^^^^^^^^^^
 
-    let builtinerror =ErrInfo {
+    fetchGit takes 3 arguments in a nix expression:
+      { url
+      , rev
+      , ref
+      }
+      If ref
+      */
+
+    let builtinerror = ErrInfo {
         level: ErrLevel::Error,
         err_name: "fetchGit Error".to_string(),
         tool_name: "nix build".to_string(),
@@ -186,7 +204,7 @@ fn main() {
         nix_file: Some("default.nix".to_string()),
         err_line: Some(ErrLine {
             line_no: 101,
-            column_range: Some((1,16)),
+            column_range: Some((1, 16)),
             loc: "builtin.fetchGit {".to_string(),
         }),
         hint: "fetchGit takes 3 arguments in a nix expression:
@@ -194,7 +212,9 @@ fn main() {
         , rev
         , ref       
         }
-Be sure your specified rev (commit) is contained in the ref (branch).".to_string().white(),
+Be sure your specified rev (commit) is contained in the ref (branch)."
+            .to_string()
+            .white(),
     };
 
     print_error(&generic);
