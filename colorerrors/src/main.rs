@@ -25,6 +25,7 @@ enum ErrLevel {
 
 fn print_error(einfo: &ErrInfo) {
     let errwidth: usize = 80;
+    let prefix = "  ";
 
     // level
     let lstring = match einfo.level {
@@ -43,7 +44,8 @@ fn print_error(einfo: &ErrInfo) {
 
     // divider
     println!(
-        "{} {} {} {} {}",
+        "{}{} {} {} {} {}",
+        prefix,
         lstring,
         "---".blue(),
         einfo.err_name.blue(),
@@ -54,21 +56,22 @@ fn print_error(einfo: &ErrInfo) {
     // filename
     match &einfo.nix_file {
         Some(fname) => {
-            println!("in file: {}", fname.blue());
-            println!("");
+            println!("{}in file: {}", prefix, fname.blue());
+            println!("{}", prefix);
         }
         None => (),
     }
     // description
-    println!("{}", einfo.description);
-    println!("");
+    println!("{}{}", prefix, einfo.description);
+    println!("{}", prefix);
     // line of code
     match &einfo.err_line {
         Some(eline) => {
-            println!("{}: {}", eline.line_no, eline.loc);
+            println!("{}{}: {}", prefix, eline.line_no, eline.loc);
             match &eline.column_range {
                 Some((col, len)) => println!(
-                    "    {}{}",
+                    "{}    {}{}",
+                    prefix,
                     " ".to_string().repeat(*col),
                     "^".to_string().repeat(*len).red()
                 ),
@@ -78,8 +81,8 @@ fn print_error(einfo: &ErrInfo) {
         None => (),
     }
     // hint
-    println!("{}", einfo.hint);
-    println!("");
+    println!("{}{}", prefix, einfo.hint);
+    println!("{}", prefix);
 }
 
 // fn print_error(err_name: &str, tool_name &str, general) {
@@ -217,6 +220,7 @@ Be sure your specified rev (commit) is contained in the ref (branch)."
             .white(),
     };
 
+    println!("");
     print_error(&generic);
     print_error(&langwarning);
     print_error(&langerror);
