@@ -1,4 +1,4 @@
-extern crate colored; // not needed in Rust 2018
+extern crate colored; 
 
 use colored::*;
 
@@ -125,7 +125,7 @@ fn main() {
             column_range: Some((22, 14)),
             loc: "line of code where the error occurred".to_string(),
         }),
-        hint: "error hint".to_string().white(),
+        hint: format!("error hint with templated {}", "values".to_string().yellow()).white(),
     };
 
     /*
@@ -215,7 +215,7 @@ fn main() {
         , rev
         , ref       
         }
-Be sure your specified rev (commit) is contained in the ref (branch)."
+  Be sure your specified rev (commit) is contained in the ref (branch)."
             .to_string()
             .white(),
     };
