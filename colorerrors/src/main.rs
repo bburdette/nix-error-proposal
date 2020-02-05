@@ -52,18 +52,23 @@ fn print_error(einfo: &ErrInfo) {
         "-".repeat(dashwidth).blue(),
         einfo.tool_name.blue()
     );
-    // println!("");
+
     // filename
     match &einfo.nix_file {
         Some(fname) => {
             println!("{}in file: {}", prefix, fname.blue());
             println!("{}", prefix);
         }
-        None => (),
-    }
+        None => {
+            println!("{}from command line argument", prefix);
+            println!("{}", prefix);
+        }
+        }
+
     // description
     println!("{}{}", prefix, einfo.description);
     println!("{}", prefix);
+
     // line of code
     match &einfo.err_line {
         Some(eline) => {
@@ -80,40 +85,14 @@ fn print_error(einfo: &ErrInfo) {
         }
         None => (),
     }
+
     // hint
     println!("{}{}", prefix, einfo.hint);
     println!("{}", prefix);
 }
 
-// fn print_error(err_name: &str, tool_name &str, general) {
-//   println!( ---<Error Name>----------------------------- <nix tool name>
-//       error in file: <nix filename>
 
-//       <general error description>
-
-//       <line number> line of code where error occurred, with color underlining.
-//                                                                   ^^^^^^^^^^^
-//       hint about how to fix the problem, perhaps with templated text indicating
-//       the problem:
-//         "underlining" symbol was not found.
-// test the example with `cargo run --example most_simple`
 fn main() {
-    // let x = "blah".green();
-    // let y: String = x; // error!
-    // TADAA!
-
-    /*      ***<Error Name>***************************** <nix tool name>
-          error in file: <nix filename>
-
-          <general error description>
-
-          <line number> line of code where error occurred, with color underlining.
-                                                                      ^^^^^^^^^^^
-          hint about how to fix the problem, perhaps with templated text indicating
-          the problem:
-            "underlining" symbol was not found.
-
-    */
     let generic = ErrInfo {
         level: ErrLevel::Error,
         err_name: "error name".to_string(),
@@ -128,17 +107,6 @@ fn main() {
         hint: format!("error hint with templated {}", "values".to_string().yellow()).white(),
     };
 
-    /*
-            --- Attribute Name ------------------------------- nix-build
-            warning in file: n/a
-
-        warning: Attribute format is incorrect.  Only letters a-z, A-Z, 0-9, or one of "+_-" are allowed.
-
-        1: { "hi.there" = (import <nixpkgs> {}).hello; }
-              ^^^^^^^^
-            The symbol "hi.there" doesn't satisfy attribute naming requirements.  It will be ignored.
-    */
-
     let langwarning = ErrInfo {
         level: ErrLevel::Warning,
         err_name: "Attribute Name".to_string(),
@@ -152,17 +120,7 @@ fn main() {
         }),
         hint: format!("The symbol {} doesn't satisfy attribute naming requirements.  It will be ignored.", "hi.there".blue()).to_string().white(),
     };
-    /*
-            --- String Error ------------------------------- nix-build
-            error in file: n/a
-
-        error: Invalid escape character.  Only \t \n \r \" \\ are allowed.
-
-        1: { foo = "test \e"; }
-                         ^^
-            "\e" is an invalid escape character.
-    */
-    
+   
     let langerror = ErrInfo {
         level: ErrLevel::Error,
         err_name: "String Error".to_string(),
@@ -176,28 +134,12 @@ fn main() {
         }),
         hint: format!(
             "{} is an invalid escape character for a nix string.",
-            "\\e".blue()
+            "\\e".yellow()
         )
         .to_string()
         .white(),
     };
 
-    /*
-    ***<fetchGit>***************************** <nix>
-    error in file: n/a
-
-    builtin.fetchGit: git returned an error.
-
-    1: builtin.fetchGit {
-       ^^^^^^^^^^^^^^^^
-
-    fetchGit takes 3 arguments in a nix expression:
-      { url
-      , rev
-      , ref
-      }
-      If ref
-      */
 
     let builtinerror = ErrInfo {
         level: ErrLevel::Error,
@@ -210,21 +152,24 @@ fn main() {
             column_range: Some((1, 16)),
             loc: "builtin.fetchGit {".to_string(),
         }),
-        hint: "fetchGit takes 3 arguments in a nix expression:
-        { url
-        , rev
-        , ref       
-        }
-  Be sure your specified rev (commit) is contained in the ref (branch)."
-            .to_string()
-            .white(),
-    };
+        hint: "fetchGit takes 4 arguments in a nix expression:
+      { url 
+      , rev (optional)
+      , ref (optional)
+      , name (optional)
+      }
+  If the ref (branch) does not contain the rev (commit), then the fetch will fail.
 
+  See the manual for more:
+
+  https://nixos.org/nix/manual/#builtin-fetchGit".white() };
+
+
+    // print all the errors
     println!("");
     print_error(&generic);
     print_error(&langwarning);
     print_error(&langerror);
     print_error(&builtinerror);
 
-    // println!("{} {} !", "it".green(), "works".blue().bold());
 }
