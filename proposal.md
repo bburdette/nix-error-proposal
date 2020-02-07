@@ -1,12 +1,12 @@
 
 
-# nix error enhancement
+# Nix Error Enhancement
 
-One of the areas where Nix could have increased ease of use is in error quality.  
+One of the areas where Nix could have increased ease of use is in error quality.
 
 In the past decade there has been a trend towards increased ease of use for development tools.  The Elm language is one of the leaders in this area, having inspired [helpful errors](https://blog.rust*lang.org/2016/08/10/Shape*of*errors*to*come.html) in other projects such as Rust.  [This article](https://elm*lang.org/news/compiler*errors*for*humans) by the author of Elm outlines their basic approach.
 
-To my mind, the main goal of these enhanced errors is to minimize the time that the nix user must spend to correct their problem.  Ideally the error should provide all the information needed to fix things and move on, without having to resort to the docs, use online help, or - in the nix case - grep through nixpkgs.  And if an error message can't provide a solution, at least it should indicate where the problem occurred and where to look for more information.
+To my mind, the main goal of these enhanced errors is to minimize the time that the nix user must spend to correct their problem.  Ideally the error should provide all the information needed to fix things and move on, without having to resort to the docs, online help, or grepping through nixpkgs.  If an error message can't provide a solution, at least it should indicate where the problem occurred and where to look for more information.
 
 More precisely, errors ought to: 
 * Have a consistent error format that's easily recognizable by the user, with the same types of data in the same places every time.
@@ -125,17 +125,14 @@ note: currently hard linking saves 932.01 MiB
 0 store paths deleted, 0.00 MiB freed
 ```
 
-Proposed:
-```
-bburdette@BB-5520:~/code/deploy-bots$ nix-collect-garbage 
-warning: collecting garbage for user bburdette only
-finding garbage collector roots...
-deleting garbage...
-deleting '/nix/store/trash'
-deleting unused links...
-note: currently hard linking saves 932.01 MiB
-0 store paths deleted, 0.00 MiB freed
-```
+Proposed output:
+
+![fetchgit image](https://bots.practica.site/static/nixerr-imgs/garbage.png)
+
+This is admittedly pretty heavyweight output for many warning messages.
+For new users, it would be helpful though.  Lowering the verbosity level below the default
+could reduce the output. 
+
 
 #### error example: 
 https://github.com/NixOS/nix/issues/2238

@@ -168,6 +168,22 @@ fn main() {
             .white(),
     };
 
+    let toolwarning = ErrInfo {
+        level: ErrLevel::Warning,
+        err_name: "user-only garbage collection".to_string(),
+        tool_name: "nix-collect-garbage".to_string(),
+        description: "collecting garbage for user account only.".to_string(),
+        nix_file: None,
+        err_line: None,
+        hint: format!(
+            "this command will collect garbage for user {} only.
+  To remove OS generations, run as root or use sudo.  See the manual for more.
+  https://nixos.org/nix/manual/#name-5",
+            "bburdette".yellow(),
+        )
+        .white(),
+    };
+
     let toolerror = ErrInfo {
         level: ErrLevel::Error,
         err_name: "remote builder error".to_string(),
@@ -182,8 +198,8 @@ fn main() {
 
   See the nix manual for more information:
   https://nixos.org/nix/manual/#chap-distributed-builds",
-    "[ \"big-parallel\" ]".yellow(),
-    "[]".yellow(),
+            "[ \"big-parallel\" ]".yellow(),
+            "[]".yellow(),
         )
         .white(),
     };
@@ -195,4 +211,18 @@ fn main() {
     print_error(&langerror);
     print_error(&builtinerror);
     print_error(&toolerror);
+
+    // tool warning gets context.
+    println!(
+        "{}:{}$  nix-collect-garbage",
+        "bburdette@BB-5520".green(),
+        "~/code/deploy-bots".blue()
+    );
+    print_error(&toolwarning);
+    println!("finding garbage collector roots...");
+    println!("deleting garbage...");
+    println!("deleting '/nix/store/trash'");
+    println!("deleting unused links...");
+    println!("note: currently hard linking saves 932.01 MiB");
+    println!("0 store paths deleted, 0.00 MiB freed");
 }
