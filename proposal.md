@@ -167,7 +167,19 @@ of errors.  I propose enabling these flags in all packages with a sufficient ver
 
 When there is a bash error, propose common debugging strategies for bash builders.
 
+# Implementation
 
+First is to implement an error printing function in the C code.  I have a rust mockup [here](https://github.com/bburdette/nix-errors-wk/tree/master/colorerrors).  That's the easy part!
+
+Next up is to make sure the information needed for the standard error format is available at error time, in the nix language processing, and anywhere that error messages can be produced.  
+
+With the error format information available, we need to provide all that for each of the **language** and **builtin** errors in nix - hints, error templates, error name, general error description.
+
+For builtins, specialized logic may be needed to interpret results from external tools like git or curl.  General hints and strategy for these kinds of errors will be helpful too.
+
+The **tool** errors are probably the most challenging, if we really want to address all the issues in the nix github.  Most of these would require dedicated C code to detect special conditions, in addition to the error hints, general description, and etc.  Each of these is different!
+
+Lastly the **builder** errors.  Focusing on bash seems like the best bang for the buck.  Getting the file and line information for bash errors should go a long way towards making them more debuggable.  
 
 
 
