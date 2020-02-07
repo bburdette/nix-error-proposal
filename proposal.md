@@ -103,12 +103,6 @@ error: program 'git' failed with exit code 128
 ![fetchgit image](https://bots.practica.site/static/nixerr-imgs/fetchgit.png)
 ##  Tool Errors
 
-### Q: do we use the big fancy error format or not?  
-### A: For warnings, seems like overkill.  Having the divider would be nice if a tool is run in a script, but for command line use, that seems excessive.  What about for errors?
-### For errors, it would still be nice to have the hint section IMO, and a link to the manual wouldn't be a bad thing either.
-
-### existing error/debug/warn stuff in nix!  Use it?
-
 These are warnings and errors from nix tools like nix-copy-closure, nix-collect-garbage, nix-instantiate, etc.  In the github issue database, most of the tool issues are requests for warnings when certain conditions hold.  In most cases the heavyweight error format used for language/builtin errors is not needed.  
 
 #### warning example: 
