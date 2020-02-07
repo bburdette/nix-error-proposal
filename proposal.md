@@ -1,101 +1,160 @@
-# overview
 
-We want to improve nix errors - the messages themselves, their context, and formatting.
 
-I've gone through the nix github issues, and come up with about 90 candidates for improved errors.
-Its likely there are many more improvements to be made, but these are some representative examples 
-that point at the kinds of changes that would be appropriate.
+# nix error enhancement
 
-Here's a spreadsheet with the candidate errors at the top:
-https://docs.google.com/spreadsheets/d/1YeMT8nQPaMaZWLKE0IqVY5o8XvfiNbhuv1TWWZ0VwJk/edit#gid=1201267462
+One of the areas where Nix could have increased ease of use is in error quality.  
 
-I've put these into the following four classes:
-  * *language*: syntax errors and the like in the nix language. (13 issues)
-  * *builtin*: errors that occur in builtin functions. (6 issues)
-  * *tool*: errors returned by tools like nix-build or nix-copy-clojure. (65 issues)
-  * *builder*: errors that occur in a builder, like bash. (2 issues) 
+In the past decade there has been a trend towards increased ease of use for development tools.  The Elm language is one of the leaders in this area, having inspired [helpful errors](https://blog.rust*lang.org/2016/08/10/Shape*of*errors*to*come.html) in other projects such as Rust.  [This article](https://elm*lang.org/news/compiler*errors*for*humans) by the author of Elm outlines their basic approach.
 
-Before revising or adding the error messages themselves, I propose working up a generate error 
-format.  [This article](https://elm-lang.org/news/compiler-errors-for-humans) outlines the elm error message approach.
+To my mind, the main goal of these enhanced errors is to minimize the time that the nix user must spend to correct their problem.  Ideally the error should provide all the information needed to fix things and move on, without having to resort to the docs, use online help, or - in the nix case - grep through nixpkgs.  And if an error message can't provide a solution, at least it should indicate where the problem occurred and where to look for more information.
 
-# class 1:  nix language errors.
+More precisely, errors ought to: 
+* Have a consistent error format that's easily recognizable by the user, with the same types of data in the same places every time.
+* Have a clear divider to show where the error report begins, and to separate multiple errors from each other.
+* Be easy to see amid a wash of log data or debug output.
+* Show the file, line and column of the code where the error occurred, whenever possible.
+* Show the actual text of the offending code in the error itself.
+* Use color in the format to make it a quicker to parse visually.
+* Provide a general description of the error.
+* Provide a suggested course of action to correct the problem.
+* Provide concrete examples of the problem and potential solutions.
 
+## Error Template
+
+Errors messages should, as much as possible, share a common format for consistency.   For nix language errors, an error template would look something like this:
+
+    error/warning: --- <error name> ----------------------------------- \<nix tool name>
+    in file: <nix filename>
+    
+    <general error description>
+    
+    <line number>: <nix code containing the error>
+                              
+    <error hint>
+
+And rendered in the terminal, with colored text:
+
+![generic error](https://bots.practica.site/static/nixerr-imgs/generic.png)
+
+For different categories of error, the rendered error will contain different information.  Speaking of which:
+
+## Categories of nix errors
+
+For inspiration - and concrete examples - I've gone through the nix issue database on github and flagged issues that are candidates for error message improvement.  There are about 90 issues, and they fall roughly into four categories:
+
+  * **language**: syntax errors and the like in the nix language. (13 issues)
+  * **builtin**: errors that occur in builtin functions. (6 issues)
+  * **tool**: non-language  errors returned by tools like nix-build or nix-copy-clojure. (65 issues)
+  * **builder**: errors that occur in a builder, like bash. (2 issues) 
+
+These are available in this [spreadsheet](https://docs.google.com/spreadsheets/d/1YeMT8nQPaMaZWLKE0IqVY5o8XvfiNbhuv1TWWZ0VwJk/edit#gid=1201267462) with the candidate errors at the top.
+
+## Language Errors
+
+Language errors will make use of the full error template.  There may be a nix file that contains the error, and a line of code where the error occurred.  
+
+### language warning example:
 https://github.com/NixOS/nix/issues/3088
+nix-build ignores attributes with a period {"a.b" = drv}
+
+This works:
+
+	$ nix-build --expr '{ hi = (import <nixpkgs> {}).hello; }'
+	/nix/store/...-hello-2.10
+
+
+But this:
+
+	$ nix-build --expr '{ "hi.there" = (import <nixpkgs> {}).hello; }'
+
+Should emit:
+![language warning](https://bots.practica.site/static/nixerr-imgs/attributename.png)
+Since there was a problem in a nix expression, this example includes the line number and line of code where the problem occurred.
+
+### language error example:
 https://github.com/NixOS/nix/issues/3063
+Nix should fail (or warn) on unsupported string escapes
 
-- nix language errors are the most similar to elm errors.
-- use error template as below.
-- build an error message catalog.
-  collection of *.nix snippets that produce errors.
+	$ nix-build --expr '{ foo = "test \e"; }'
 
-Language error template:
+![enter image description here](https://bots.practica.site/static/nixerr-imgs/escapechar.png)        
+## Builtin Errors
 
-      ---<Error Type>----------------------------- <filename>
+The error format for builtin errors is the same as the language errors, but the errors themselves may come from software external to nix, like git.  We may want to detect or interpret errors that these programs return in the context of nix usage.  An example:
 
-      general error text.
+https://github.com/NixOS/nix/issues/2431
+fetchGit fails with a not very helpful error message when fetching a revision not in the remote's HEAD
 
-      <line number> line of code where error occurred, with color underlining.
-                         ^^ 
+Current output:
 
-      hint about how to fix the problem, perhaps with text indicating the problem:
-        which occurred at this word: <of>
-        
-# class 2: builtin errors.
+```
+[nix-shell:~/code/nix-errors-wk/colorerrors]$ cat << EOF | nix repl
+> builtins.fetchGit {
+>   url = https://github.com/nixos/nixpkgs-channels;
+>   rev = "01f5e794913a18494642b5f237bd76c054339d61";
+> }
+> EOF
+Welcome to Nix version 2.3.2. Type :? for help.
 
-example:  https://github.com/NixOS/nix/issues/2431
+fatal: not a tree object: 01f5e794913a18494642b5f237bd76c054339d61
+error: program 'git' failed with exit code 128
+```
 
-These are errors that occur in the builtin functions.  The error format is similar to the language
-errors, but the errors themselves may come from software external to nix, like git.
-We may want to detect and interpret errors that these programs return in the context of nix usage.
+![fetchgit image](https://bots.practica.site/static/nixerr-imgs/fetchgit.png)
+##  Tool Errors
 
-      ---<Error Type>----------------------------- <filename>
+### Q: do we use the big fancy error format or not?  
+### A: For warnings, seems like overkill.  Having the divider would be nice if a tool is run in a script, but for command line use, that seems excessive.  What about for errors?
+### For errors, it would still be nice to have the hint section IMO, and a link to the manual wouldn't be a bad thing either.
 
-      general error text, or error returned by an external program.  What happened?
-          fatal: not a tree object
-          error: program 'git' failed with exit code 128
+### existing error/debug/warn stuff in nix!  Use it?
 
-      <line number> builtin.function in nix code where error occurred, with color underlining.
-                    ^^^^^^^^^^^^^^^^
-      hint about how to fix the problem, perhaps with text indicating the problem:
-        This is likely because of an invalid rev, or a rev that is not in the specified ref.
-        fetchGit fetches the entire history of the specified ref, and the specified rev must be an ancestor of that.
+These are warnings and errors from nix tools like nix-copy-closure, nix-collect-garbage, nix-instantiate, etc.  In the github issue database, most of the tool issues are requests for warnings when certain conditions hold.  In most cases the heavyweight error format used for language/builtin errors is not needed.  
 
+#### warning example: 
+https://github.com/NixOS/nix/issues/1492
 
-# class 3:  tool error messages.
+Current output:
+```
+bburdette@BB-5520:~/code/deploy-bots$ nix-collect-garbage 
+finding garbage collector roots...
+deleting garbage...
+deleting '/nix/store/trash'
+deleting unused links...
+note: currently hard linking saves 932.01 MiB
+0 store paths deleted, 0.00 MiB freed
+```
 
-warnings and errors from nix tools like nix-copy-closure, nix-collect-garbage, nix-instantiate, etc.
+Proposed:
+```
+bburdette@BB-5520:~/code/deploy-bots$ nix-collect-garbage 
+warning: collecting garbage for user bburdette only
+finding garbage collector roots...
+deleting garbage...
+deleting '/nix/store/trash'
+deleting unused links...
+note: currently hard linking saves 932.01 MiB
+0 store paths deleted, 0.00 MiB freed
+```
 
-most of the tool issues are requests for warnings when certain conditions hold.
+#### error example: 
+https://github.com/NixOS/nix/issues/2238
+```
+nix-store --realise --builders 'ssh://root@1.2.3.4 x86_64-linux' -j0 /nix/store/i0kwyxpihg1gcp9jg4qwp7qcrpagj818-chromium-67.0.3396.87.drv /nix/store/bmigs53iryqpqjsy5w4qjfndlh6hxbms-chromium-67.0.3396.87.drv
+```
+yields 
 
-warning example: https://github.com/NixOS/nix/issues/1492
+`unable to start any build; either increase '--max-jobs' or enable remote builds`
 
-error example: https://github.com/NixOS/nix/issues/765
+Proposed output:
 
-- tools may evaluate nix expressions, in which case the errors will be in the language format.
-- Tool errors in the nix issues often require special code changes to detect problems.
+![fetchgit image](https://bots.practica.site/static/nixerr-imgs/remote-builder.png)
 
-warning mode.
-
-error template:
-
-      --<Error type>------------------------------- <tool name>
-
-      general error text.
-      
-      tool command line, ie nix-collect-garbage -d
-
-      proposed solution?
-
-      docs link.
-
-
-Specific examples!
-
-# class 4:  bash/builder errors.
+### class 4:  bash/builder errors.
 
 bash is by far the most common builder.  When there is problem in a bash script, ideally we'd 
 like to report the file and line number for that problem.  This isn't something that's natural for bash, but
-you can get pretty close with *set -x* together with setting a $PS4 environment variable. 
+you can get pretty close with *set *x* together with setting a $PS4 environment variable. 
 
 For an individual package, you can enable this with by adding these attributes:
 
@@ -106,4 +165,9 @@ That's great if the problem is in your top level package, but what if its a few 
 You'd have to clone nixpkgs and systematically add these flags to every package in the chain
 of errors.  I propose enabling these flags in all packages with a sufficient verbosity level.
 
- 
+When there is a bash error, propose common debugging strategies for bash builders.
+
+
+
+
+
