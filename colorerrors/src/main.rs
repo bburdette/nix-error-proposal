@@ -214,7 +214,7 @@ fn main() {
 
     // tool warning gets context.
     println!(
-        "{}:{}$  nix-collect-garbage",
+        "{}:{}$ nix-collect-garbage",
         "bburdette@BB-5520".green(),
         "~/code/deploy-bots".blue()
     );
