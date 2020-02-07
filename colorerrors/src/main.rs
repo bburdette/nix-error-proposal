@@ -1,4 +1,4 @@
-extern crate colored; 
+extern crate colored;
 
 use colored::*;
 
@@ -63,7 +63,7 @@ fn print_error(einfo: &ErrInfo) {
             println!("{}from command line argument", prefix);
             println!("{}", prefix);
         }
-        }
+    }
 
     // description
     println!("{}{}", prefix, einfo.description);
@@ -91,7 +91,6 @@ fn print_error(einfo: &ErrInfo) {
     println!("{}", prefix);
 }
 
-
 fn main() {
     let generic = ErrInfo {
         level: ErrLevel::Error,
@@ -104,7 +103,11 @@ fn main() {
             column_range: Some((22, 14)),
             loc: "line of code where the error occurred".to_string(),
         }),
-        hint: format!("error hint with templated {}", "values".to_string().yellow()).white(),
+        hint: format!(
+            "error hint with templated {}",
+            "values".to_string().yellow()
+        )
+        .white(),
     };
 
     let langwarning = ErrInfo {
@@ -120,7 +123,7 @@ fn main() {
         }),
         hint: format!("The symbol {} doesn't satisfy attribute naming requirements.  It will be ignored.", "hi.there".blue()).to_string().white(),
     };
-   
+
     let langerror = ErrInfo {
         level: ErrLevel::Error,
         err_name: "String Error".to_string(),
@@ -139,7 +142,6 @@ fn main() {
         .to_string()
         .white(),
     };
-
 
     let builtinerror = ErrInfo {
         level: ErrLevel::Error,
@@ -162,8 +164,29 @@ fn main() {
 
   See the manual for more:
 
-  https://nixos.org/nix/manual/#builtin-fetchGit".white() };
+  https://nixos.org/nix/manual/#builtin-fetchGit"
+            .white(),
+    };
 
+    let toolerror = ErrInfo {
+        level: ErrLevel::Error,
+        err_name: "remote builder error".to_string(),
+        tool_name: "nix-store".to_string(),
+        description: "the remote builder doesn't meet package requirements.".to_string(),
+        nix_file: None,
+        err_line: None,
+        hint: format!(
+            "This build has requiredSystemFeatures: {}
+  But the remote machine only has: {}.
+  If the remote machine has the features, declare them in its builder specification.
+
+  See the nix manual for more information:
+  https://nixos.org/nix/manual/#chap-distributed-builds",
+    "[ \"big-parallel\" ]".yellow(),
+    "[]".yellow(),
+        )
+        .white(),
+    };
 
     // print all the errors
     println!("");
@@ -171,5 +194,5 @@ fn main() {
     print_error(&langwarning);
     print_error(&langerror);
     print_error(&builtinerror);
-
+    print_error(&toolerror);
 }
