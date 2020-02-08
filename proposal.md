@@ -55,7 +55,7 @@ Language errors will make use of the full error template.  There may be a nix fi
 
 ### language warning example:
 
-[Issue 3088](https://github.com/NixOS/nix/issues/3088) nix-build ignores attributes with a period {"a.b" = drv}
+[Issue 3088:](https://github.com/NixOS/nix/issues/3088) nix-build ignores attributes with a period {"a.b" = drv}
 
 This works:
 
@@ -72,17 +72,17 @@ Should emit:
 Since there was a problem in a nix expression, this example includes the line number and line of code where the problem occurred.
 
 ### language error example:
-https://github.com/NixOS/nix/issues/3063
-Nix should fail (or warn) on unsupported string escapes
+
+[Issue 3063:](https://github.com/NixOS/nix/issues/3063) Nix should fail (or warn) on unsupported string escapes
 
 	$ nix-build --expr '{ foo = "test \e"; }'
 
-![enter image description here](https://bots.practica.site/static/nixerr-imgs/escapechar.png)        
+![escape char image](https://bots.practica.site/static/nixerr-imgs/escapechar.png)        
 ## Builtin Errors
 
 The error format for builtin errors is the same as the language errors, but the errors themselves may come from software external to nix, like git.  We may want to detect or interpret errors that these programs return in the context of nix usage.  An example:
 
-[Issue 2431](https://github.com/NixOS/nix/issues/2431) fetchGit fails with a not very helpful error message when fetching a revision not in the remote's HEAD.
+[Issue 2431:](https://github.com/NixOS/nix/issues/2431) fetchGit fails with a not very helpful error message when fetching a revision not in the remote's HEAD.
 
 Current output:
 
@@ -105,7 +105,7 @@ error: program 'git' failed with exit code 128
 These are warnings and errors from nix tools like nix-copy-closure, nix-collect-garbage, nix-instantiate, etc.  In the github issue database, most of the tool issues are requests for warnings when certain conditions hold.  In most cases the heavyweight error format used for language/builtin errors is not needed.  
 
 #### warning example: 
-[Issue 1492](https://github.com/NixOS/nix/issues/1492) nix-collect-garbage -d should issue a warning when run as non-root user
+[Issue 1492:](https://github.com/NixOS/nix/issues/1492) nix-collect-garbage -d should issue a warning when run as non-root user
 
 Current output:
 ```
@@ -128,7 +128,7 @@ could reduce the output.
 
 
 #### error example: 
-[Issue 2238](https://github.com/NixOS/nix/issues/2238) Improve error message when missing remote building feature forbids build
+[Issue 2238:](https://github.com/NixOS/nix/issues/2238) Improve error message when missing remote building feature forbids build
 
 ```
 nix-store --realise --builders 'ssh://root@1.2.3.4 x86_64-linux' -j0 /nix/store/i0kwyxpihg1gcp9jg4qwp7qcrpagj818-chromium-67.0.3396.87.drv /nix/store/bmigs53iryqpqjsy5w4qjfndlh6hxbms-chromium-67.0.3396.87.drv
