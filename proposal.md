@@ -102,7 +102,7 @@ error: program 'git' failed with exit code 128
 ![fetchgit image](https://bots.practica.site/static/nixerr-imgs/fetchgit.png)
 ##  Tool Errors
 
-These are warnings and errors from nix tools like nix-copy-closure, nix-collect-garbage, nix-instantiate, etc.  In the github issue database, most of the tool issues are requests for warnings when certain conditions hold.  In most cases the heavyweight error format used for language/builtin errors is not needed.  
+These are warnings and errors from nix tools like nix-copy-closure, nix-collect-garbage, nix-instantiate, etc.  In the github issue database, most of the tool issues are requests for warnings when certain conditions hold.  
 
 #### warning example: 
 [Issue 1492:](https://github.com/NixOS/nix/issues/1492) nix-collect-garbage -d should issue a warning when run as non-root user
@@ -124,7 +124,7 @@ Proposed output:
 
 This is admittedly pretty heavyweight output for many warning messages.
 For new users, it would be helpful though.  Lowering the verbosity level below the default
-could reduce the output. 
+could reduce the output.
 
 
 #### error example: 
@@ -171,6 +171,3 @@ For builtins, specialized logic may be needed to interpret results from external
 The **tool** errors are probably the most challenging, if we really want to address all the issues in the nix github.  Most of these would require dedicated C code to detect special conditions, in addition to the error hints, general description, and etc.  Each of these is different!
 
 Lastly the **builder** errors.  Focusing on bash seems like the best bang for the buck.  Getting the file and line information for bash errors should go a long way towards making them more debuggable.  
-
-
-
