@@ -6,7 +6,7 @@ One of the areas where Nix could have increased ease of use is in error quality.
 
 In the past decade there has been a trend towards increased ease of use for development tools.  The Elm language is one of the leaders in this area, having inspired [helpful errors](https://blog.rust*lang.org/2016/08/10/Shape*of*errors*to*come.html) in other projects such as Rust.  [This article](https://elm*lang.org/news/compiler*errors*for*humans) by the author of Elm outlines their basic approach.
 
-To my mind, the main goal of these enhanced errors is to minimize the time that the nix user must spend to correct their problem.  Ideally the error should provide all the information needed to fix things and move on, without having to resort to the docs, online help, or grepping through nixpkgs.  If an error message can't provide a solution, at least it should indicate where the problem occurred and where to look for more information.
+The main goal of these enhanced errors is to minimize the time that the nix user must spend to correct their problem.  Ideally the error should provide all the information needed to fix things and move on, without having to resort to the docs, online help, or grepping through nixpkgs.  If an error message can't provide a solution, at least it should indicate where the problem occurred and where to look for more information.
 
 More precisely, errors ought to: 
 * Have a consistent error format that's easily recognizable by the user, with the same types of data in the same places every time.
@@ -144,25 +144,23 @@ Proposed output:
 ### class 4:  bash/builder errors.
 
 bash is by far the most common builder.  When there is a problem in a bash script, ideally we'd 
-like to report the file and line number for that problem.  This isn't something that's natural for bash, but
-you can get pretty close with *set -x* together with setting a $PS4 environment variable. 
+like to report the file and line number for that problem.  But this isn't something that's natural for bash.
+You can get kind of close with *set -x* together with setting a $PS4 environment variable. 
 
 For an individual package, you can enable this with by adding these attributes:
 
+```
   NIX_DEBUG=6; 
   PS4="\${BASH_SOURCE}:\${LINENO} ";
- 
-That's great if the problem is in your top level package, but what if its a few packages down?
-You'd have to clone nixpkgs and systematically add these flags to every package in the chain
-of errors.  I propose enabling these flags in all packages with a sufficient verbosity level.
+```
 
-When there is a bash error, propose common debugging strategies for bash builders.
+But what if its a few packages down?  And, bash can load and evaluate strings, and the origin of the string being currently being executed may not be easy to determine.  At any rate when there is a bash error at least we can point to common debugging procedures, and especially ones specific to Nix.
 
 # Implementation
 
 First is to implement an error printing function in the C code.  I have a rust mockup [here](https://github.com/bburdette/nix-errors-wk/tree/master/colorerrors).  That's the easy part!
 
-Next up is to make sure the information needed for the standard error format is available at error time, in the nix language processing, and anywhere that error messages can be produced.  
+Next up is to make sure the information needed for the standard error format is available at error time, in the nix language processing, and anywhere else that error messages can be produced.  
 
 With the error format information available, we need to provide all that for each of the **language** and **builtin** errors in nix - hints, error templates, error name, general error description.
 
