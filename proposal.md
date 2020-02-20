@@ -86,20 +86,12 @@ The error format for builtin errors is the same as the language errors, but the 
 
 Current output:
 
-```
-[nix-shell:~/code/nix-errors-wk/colorerrors]$ cat << EOF | nix repl
-> builtins.fetchGit {
->   url = https://github.com/nixos/nixpkgs-channels;
->   rev = "01f5e794913a18494642b5f237bd76c054339d61";
-> }
-> EOF
-Welcome to Nix version 2.3.2. Type :? for help.
+![fetchgit image](https://bots.practica.site/static/nixerr-imgs/fetchgit-before.png)
 
-fatal: not a tree object: 01f5e794913a18494642b5f237bd76c054339d61
-error: program 'git' failed with exit code 128
-```
+Proposed output:
 
 ![fetchgit image](https://bots.practica.site/static/nixerr-imgs/fetchgit.png)
+
 ##  Tool Errors
 
 These are warnings and errors from nix tools like nix-copy-closure, nix-collect-garbage, nix-instantiate, etc.  In the github issue database, most of the tool issues are requests for warnings when certain conditions hold.  
@@ -108,19 +100,12 @@ These are warnings and errors from nix tools like nix-copy-closure, nix-collect-
 [Issue 1492:](https://github.com/NixOS/nix/issues/1492) nix-collect-garbage -d should issue a warning when run as non-root user
 
 Current output:
-```
-bburdette@BB-5520:~/code/deploy-bots$ nix-collect-garbage 
-finding garbage collector roots...
-deleting garbage...
-deleting '/nix/store/trash'
-deleting unused links...
-note: currently hard linking saves 932.01 MiB
-0 store paths deleted, 0.00 MiB freed
-```
+
+![garbage before image](https://bots.practica.site/static/nixerr-imgs/garbage-before.png)
 
 Proposed output:
 
-![fetchgit image](https://bots.practica.site/static/nixerr-imgs/garbage.png)
+![garbage image](https://bots.practica.site/static/nixerr-imgs/garbage.png)
 
 This is admittedly pretty heavyweight output for many warning messages.
 For new users, it would be helpful though.  Lowering the verbosity level below the default
@@ -133,9 +118,10 @@ could reduce the output.
 ```
 nix-store --realise --builders 'ssh://root@1.2.3.4 x86_64-linux' -j0 /nix/store/i0kwyxpihg1gcp9jg4qwp7qcrpagj818-chromium-67.0.3396.87.drv /nix/store/bmigs53iryqpqjsy5w4qjfndlh6hxbms-chromium-67.0.3396.87.drv
 ```
-yields 
 
-`unable to start any build; either increase '--max-jobs' or enable remote builds`
+current output:
+
+![fetchgit image](https://bots.practica.site/static/nixerr-imgs/chromium.fail.png)
 
 Proposed output:
 
