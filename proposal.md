@@ -66,16 +66,26 @@ This works:
 But this:
 
 	$ nix-build --expr '{ "hi.there" = (import <nixpkgs> {}).hello; }'
+	
+Current output - error is ignored:
 
-Should emit:
+![language_warning_before](https://bots.practica.site/static/nixerr-imgs/hi.there.before.png)
+
+Proposed warning output:
+
 ![language warning](https://bots.practica.site/static/nixerr-imgs/attributename.png)
+
 Since there was a problem in a nix expression, this example includes the line number and line of code where the problem occurred.
 
 ### language error example:
 
 [Issue 3063:](https://github.com/NixOS/nix/issues/3063) Nix should fail (or warn) on unsupported string escapes
 
-	$ nix-build --expr '{ foo = "test \e"; }'
+Current output - bad character is siliently ignored:
+
+![escape char before image](https://bots.practica.site/static/nixerr-imgs/escape.before.png)        
+
+Proposed error output:
 
 ![escape char image](https://bots.practica.site/static/nixerr-imgs/escapechar.png)        
 ## Builtin Errors
