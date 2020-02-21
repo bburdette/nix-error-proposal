@@ -1,5 +1,3 @@
-
-
 # Nix Error Enhancement
 
 One of the areas where Nix could have increased ease of use is in error quality.
@@ -24,11 +22,13 @@ More precisely, errors ought to:
 Errors messages should, as much as possible, share a common format for consistency.   For nix language errors, an error template would look something like this:
 
     error/warning: --- <error name> ----------------------------------- \<nix tool name>
-    in file: <nix filename>
+    in file: <nix filename>  at line: <line number>
     
     <general error description>
-    
-    <line number>: <nix code containing the error>
+        
+    <line number - 1>: <previous line of code>
+    <line number>:     <nix code containing the error>
+    <line number + 1>: <next line of code>
                               
     <error hint>
 
@@ -67,7 +67,7 @@ But this:
 
 	$ nix-build --expr '{ "hi.there" = (import <nixpkgs> {}).hello; }'
 	
-Current output - error is ignored:
+Should produce a warning at least.  Current output:
 
 ![language_warning_before](https://bots.practica.site/static/nixerr-imgs/hi.there.before.png)
 
@@ -139,18 +139,8 @@ Proposed output:
 
 ### class 4:  bash/builder errors.
 
-bash is by far the most common builder.  When there is a problem in a bash script, ideally we'd 
-like to report the file and line number for that problem.  But this isn't something that's natural for bash.
-You can get kind of close with *set -x* together with setting a $PS4 environment variable. 
-
-For an individual package, you can enable this with by adding these attributes:
-
-```
-  NIX_DEBUG=6; 
-  PS4="\${BASH_SOURCE}:\${LINENO} ";
-```
-
-But what if its a few packages down?  And, bash can load and evaluate strings, and the origin of the string being currently being executed may not be easy to determine.  At any rate when there is a bash error at least we can point to common debugging procedures, and especially ones specific to Nix.
+Debugging bash and other builders is outside the scope of this project.  But we can look at adding error messages that point
+at helpful documentation when builder errors occur.
 
 # Implementation
 
@@ -164,4 +154,4 @@ For builtins, specialized logic may be needed to interpret results from external
 
 The **tool** errors are probably the most challenging, if we really want to address all the issues in the nix github.  Most of these would require dedicated C code to detect special conditions, in addition to the error hints, general description, and etc.  Each of these is different!
 
-Lastly the **builder** errors.  Focusing on bash seems like the best bang for the buck.  Getting the file and line information for bash errors should go a long way towards making them more debuggable.  
+Lastly the **builder** errors.  We'll provide some basic links and information to help with debugging.
