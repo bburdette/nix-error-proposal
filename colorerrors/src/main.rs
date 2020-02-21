@@ -121,7 +121,7 @@ fn main() {
             column_range: Some((2,8)),
             loc: "{ \"hi.there\" = (import <nixpkgs> {}).hello; }".to_string(),
         }),
-        hint: format!("The symbol {} doesn't satisfy attribute naming requirements.  It will be ignored.", "hi.there".blue()).to_string().white(),
+        hint: format!("The symbol {} doesn't satisfy attribute naming requirements.  It will be ignored.", "hi.there".yellow()).to_string().white(),
     };
 
     let langerror = ErrInfo {

@@ -12,6 +12,7 @@ More precisely, errors ought to:
 * Be easy to see amid a wash of log data or debug output.
 * Show the file, line and column of the code where the error occurred, whenever possible.
 * Show the actual text of the offending code in the error itself.
+* Show the context of the problem code - preceding and following lines.
 * Use color in the format to make it a quicker to parse visually.
 * Provide a general description of the error.
 * Provide a suggested course of action to correct the problem.
@@ -26,9 +27,9 @@ Errors messages should, as much as possible, share a common format for consisten
     
     <general error description>
         
-    <line number - 1>: <previous line of code>
-    <line number>:     <nix code containing the error>
-    <line number + 1>: <next line of code>
+                    <previous line of code>
+    <line number>:  <nix code containing the error>
+                    <next line of code>
                               
     <error hint>
 
@@ -146,12 +147,12 @@ at helpful documentation when builder errors occur.
 
 First is to implement an error printing function in the C code.  I have a rust mockup [here](https://github.com/bburdette/nix-errors-wk/tree/master/colorerrors).  That's the easy part!
 
-Next up is to make sure the information needed for the standard error format is available at error time, in the nix language processing, and anywhere else that error messages can be produced.  
+Next up is to make sure the error context information needed for the standard error format is available at error time, in the nix language processing, and anywhere else that error messages can be produced.  Filename, line number, current line of code.  
 
-With the error format information available, we need to provide all that for each of the **language** and **builtin** errors in nix - hints, error templates, error name, general error description.
+With the error context information available, we need to provide all that for each of the **language** and **builtin** errors in nix as well as hints, error templates, error name, general error description.
 
 For builtins, specialized logic may be needed to interpret results from external tools like git or curl.  General hints and strategy for these kinds of errors will be helpful too.
 
 The **tool** errors are probably the most challenging, if we really want to address all the issues in the nix github.  Most of these would require dedicated C code to detect special conditions, in addition to the error hints, general description, and etc.  Each of these is different!
 
-Lastly the **builder** errors.  We'll provide some basic links and information to help with debugging.
+Lastly the **builder** errors.  We'll provide some basic links and information to help with debugging.  Going beyond that - like writing a bash debugger, for instance - is outside the scope of this project.
