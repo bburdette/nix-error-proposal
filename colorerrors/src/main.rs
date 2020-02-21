@@ -23,6 +23,13 @@ enum ErrLevel {
     Error,
 }
 
+fn show_err_line(eline: &ErrLine) -> String {
+    match eline.column_range {
+        Some((start, _end)) => format!("({}:{})", eline.line_no, start),
+        None => format!("({})", eline.line_no),
+    }
+}
+
 fn print_error(einfo: &ErrInfo) {
     let errwidth: usize = 80;
     let prefix = "  ";
@@ -54,12 +61,16 @@ fn print_error(einfo: &ErrInfo) {
     );
 
     // filename
-    match &einfo.nix_file {
-        Some(fname) => {
+    match (&einfo.nix_file, &einfo.err_line) {
+        (Some(fname), Some(eline)) => {
+            println!("{}in file: {} {}", prefix, fname.blue(), show_err_line(eline).blue());
+            println!("{}", prefix);
+        }
+        (Some(fname), None) => {
             println!("{}in file: {}", prefix, fname.blue());
             println!("{}", prefix);
         }
-        None => {
+        (None, _) => {
             println!("{}from command line argument", prefix);
             println!("{}", prefix);
         }
