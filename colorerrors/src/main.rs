@@ -44,7 +44,7 @@ fn print_code_lines(prefix: &str, nix_code: &NixCode) {
           eline.column_range.map(
             |(col,len)|
             println!(
-                  "{}     |  {}{}",
+                  "{}     |{}{}",
                   prefix,
                   " ".to_string().repeat(col),
                   "^".to_string().repeat(len).red()
@@ -132,7 +132,7 @@ fn main() {
         nix_file: Some("myfile.nix".to_string()),
         err_line: Some(ErrLine {
             line_no: 7,
-            column_range: Some((22, 14)),
+            column_range: Some((24, 14)),
             loc: "line of code where the error occurred".to_string(),
             prev_loc: Some("previous line".to_string()),
             next_loc: Some("next line".to_string()),
@@ -153,7 +153,7 @@ fn main() {
         nix_file: None,
         err_line: Some(ErrLine {
             line_no: 1,
-            column_range: Some((2,8)),
+            column_range: Some((4,8)),
             prev_loc: None,
             next_loc: None,
             loc: "{ \"hi.there\" = (import <nixpkgs> {}).hello; }".to_string(),
@@ -170,7 +170,7 @@ fn main() {
         nix_file: None,
         err_line: Some(ErrLine {
             line_no: 1,
-            column_range: Some((13, 2)),
+            column_range: Some((15, 2)),
             loc: "{ foo = \"test \\e\"; }".to_string(),
             next_loc: None,
             prev_loc: None,
