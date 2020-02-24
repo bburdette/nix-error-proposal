@@ -44,7 +44,7 @@ fn print_code_lines(prefix: &str, nix_code: &NixCode) {
           eline.column_range.map(
             |(col,len)|
             println!(
-                  "{}     |{}{}",
+                  "{}     |  {}{}",
                   prefix,
                   " ".to_string().repeat(col),
                   "^".to_string().repeat(len).red()
