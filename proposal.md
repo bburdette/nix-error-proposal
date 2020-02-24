@@ -6,17 +6,25 @@ In the past decade there has been a trend towards increased ease of use for deve
 
 The main goal of these enhanced errors is to minimize the time that the nix user must spend to correct their problem.  Ideally the error should provide all the information needed to fix things and move on, without having to resort to the docs, online help, or grepping through nixpkgs.  If an error message can't provide a solution, at least it should indicate where the problem occurred and where to look for more information.
 
-More precisely, errors ought to: 
-* Have a consistent error format that's easily recognizable by the user, with the same types of data in the same places every time.
+This will involve two main parts: creating an enhanced error format, and creating the corresponding content for each error.
+
+The error format ought to: 
+* Have a consistent layout that's easily recognizable by the user, with the same types of data in the same places every time.
 * Have a clear divider to show where the error report begins, and to separate multiple errors from each other.
 * Be easy to see amid a wash of log data or debug output.
 * Show the file, line and column of the code where the error occurred, whenever possible.
 * Show the actual text of the offending code in the error itself.
 * Show the context of the problem code - preceding and following lines.
-* Use color in the format to make it a quicker to parse visually.
+* Use color in the format to make it quicker to parse visually.
 * Provide a general description of the error.
-* Provide a suggested course of action to correct the problem.
-* Provide concrete examples of the problem and potential solutions.
+* Provide a more concrete hint section.
+* Provide links to the nix docs for more detail.
+
+Content wise, the main enhancement is the hint section.
+This ought to provide additional context for the error - not just what happened, but why.
+How does the error relate to my code, and what should I do to fix it?
+Concrete examples are helpful here, and templated strings in the hint can make it 
+even more immediately relatable, with the strings pulled from the user's own code. 
 
 ## Error Template
 
@@ -27,9 +35,10 @@ Errors messages should, as much as possible, share a common format for consisten
     
     <general error description>
         
-                    <previous line of code>
-    <line number>:  <nix code containing the error>
-                    <next line of code>
+                 |  <previous line of code>
+    <line number>|  <nix code containing the error>
+                 |                           ^^^^^
+                 |  <next line of code>
                               
     <error hint>
 
