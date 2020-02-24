@@ -39,17 +39,17 @@ fn show_err_line(eline: &ErrLine) -> String {
 fn print_code_lines(prefix: &str, nix_code: &NixCode) {
   match &nix_code.err_line {
       Some(eline) => {
-          eline.prev_loc.as_ref().map(|loc| println!("{}{}: {}", prefix, eline.line_no - 1, loc));
-          println!("{}{}: {}", prefix, eline.line_no, eline.loc);
+          eline.prev_loc.as_ref().map(|loc| println!("{}{:>5}| {}", prefix, eline.line_no - 1, loc));
+          println!("{}{:>5}| {}", prefix, eline.line_no, eline.loc);
           eline.column_range.map(
             |(col,len)|
             println!(
-                  "{}    {}{}",
+                  "{}     |{}{}",
                   prefix,
                   " ".to_string().repeat(col),
                   "^".to_string().repeat(len).red()
               ));
-          eline.next_loc.as_ref().map(|loc| println!("{}{}: {}", prefix, eline.line_no + 1, loc));
+          eline.next_loc.as_ref().map(|loc| println!("{}{:>5}| {}", prefix, eline.line_no + 1, loc));
 
           println!("");
       }
