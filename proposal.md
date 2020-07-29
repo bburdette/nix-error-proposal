@@ -2,7 +2,7 @@
 
 One of the areas where Nix could have increased ease of use is in error quality.
 
-In the past decade there has been a trend towards increased ease of use for development tools.  The Elm language is one of the leaders in this area, having inspired [helpful errors](https://blog.rust*lang.org/2016/08/10/Shape*of*errors*to*come.html) in other projects such as Rust.  [This article](https://elm*lang.org/news/compiler*errors*for*humans) by the author of Elm outlines their basic approach.
+In the past decade there has been a trend towards increased ease of use for development tools.  The Elm language is one of the leaders in this area, having inspired [helpful errors](https://blog.rust-lang.org/2016/08/10/Shape-of-errors-to-come.html) in other projects such as Rust.  [This article](https://elm-lang.org/news/compiler-errors-for-humans) by the author of Elm outlines their basic approach.
 
 The main goal of these enhanced errors is to minimize the time that the nix user must spend to correct their problem.  Ideally the error should provide all the information needed to fix things and move on, without having to resort to the docs, online help, or grepping through nixpkgs.  If an error message can't provide a solution, at least it should indicate where the problem occurred and where to look for more information.
 
