@@ -1,47 +1,45 @@
 # run from nix/src
 
-ambs --no-color --column -r throw+[a-zA-Z]*Error > ../../meh.txt
-ambs --no-color --column "SQLiteError(" >> ../../meh.txt
-ambs --no-color --column "SQLiteBusy(" >> ../../meh.txt
-ambs --no-color --column "NotDeterministic(" >> ../../meh.txt
-ambs --no-color --column "NoSuchBinaryCacheFile(" >> ../../meh.txt
-ambs --no-color --column "SubstError(" >> ../../meh.txt
-ambs --no-color --column "BuildError(" >> ../../meh.txt
-ambs --no-color --column "InvalidPath(" >> ../../meh.txt
-ambs --no-color --column "Unsupported(" >> ../../meh.txt
-ambs --no-color --column "SubstituteGone(" >> ../../meh.txt
-ambs --no-color --column "SubstituterDisabled(" >> ../../meh.txt
-ambs --no-color --column "NotInStore(" >> ../../meh.txt
-ambs --no-color --column "PathInUse(" >> ../../meh.txt
-ambs --no-color --column "UploadToHTTP(" >> ../../meh.txt
-ambs --no-color --column "BadStorePath(" >> ../../meh.txt
-ambs --no-color --column "JSONParseError(" >> ../../meh.txt
-ambs --no-color --column "EvalError(" >> ../../meh.txt
-ambs --no-color --column "ParseError(" >> ../../meh.txt
-ambs --no-color --column "AssertionError(" >> ../../meh.txt
-ambs --no-color --column "ThrownError(" >> ../../meh.txt
-ambs --no-color --column "Abort(" >> ../../meh.txt
-ambs --no-color --column "TypeError(" >> ../../meh.txt
-ambs --no-color --column "UndefinedVarError(" >> ../../meh.txt
-ambs --no-color --column "RestrictedPathError(" >> ../../meh.txt
-ambs --no-color --column "AttrPathNotFound(" >> ../../meh.txt
-ambs --no-color --column "NoPositionInfo(" >> ../../meh.txt
-ambs --no-color --column "UnknownCompressionMethod(" >> ../../meh.txt
-ambs --no-color --column "CompressionError(" >> ../../meh.txt
-ambs --no-color --column "BadHash(" >> ../../meh.txt
-ambs --no-color --column "BadURL(" >> ../../meh.txt
-ambs --no-color --column "UsageError(" >> ../../meh.txt
-ambs --no-color --column "Error(" >> ../../meh.txt
-ambs --no-color --column "SerialisationError(" >> ../../meh.txt
-ambs --no-color --column "EndOfFile(" >> ../../meh.txt
-ambs --no-color --column "Interrupted(" >> ../../meh.txt
-ambs --no-color --column "FormatError(" >> ../../meh.txt
-ambs --no-color --column "ThreadPoolShutDown(" >> ../../meh.txt
-ambs --no-color --column "logWarning(" >> ../../meh.txt
-ambs --no-color --column "logError(" >> ../../meh.txt
+ambs --no-color --column -r throw+[a-zA-Z]*Error > ../../rawerrors.txt
+ambs --no-color --column "SQLiteError(" >> ../../rawerrors.txt
+ambs --no-color --column "SQLiteBusy(" >> ../../rawerrors.txt
+ambs --no-color --column "NotDeterministic(" >> ../../rawerrors.txt
+ambs --no-color --column "NoSuchBinaryCacheFile(" >> ../../rawerrors.txt
+ambs --no-color --column "SubstError(" >> ../../rawerrors.txt
+ambs --no-color --column "BuildError(" >> ../../rawerrors.txt
+ambs --no-color --column "InvalidPath(" >> ../../rawerrors.txt
+ambs --no-color --column "Unsupported(" >> ../../rawerrors.txt
+ambs --no-color --column "SubstituteGone(" >> ../../rawerrors.txt
+ambs --no-color --column "SubstituterDisabled(" >> ../../rawerrors.txt
+ambs --no-color --column "NotInStore(" >> ../../rawerrors.txt
+ambs --no-color --column "PathInUse(" >> ../../rawerrors.txt
+ambs --no-color --column "UploadToHTTP(" >> ../../rawerrors.txt
+ambs --no-color --column "BadStorePath(" >> ../../rawerrors.txt
+ambs --no-color --column "JSONParseError(" >> ../../rawerrors.txt
+ambs --no-color --column "EvalError(" >> ../../rawerrors.txt
+ambs --no-color --column "ParseError(" >> ../../rawerrors.txt
+ambs --no-color --column "AssertionError(" >> ../../rawerrors.txt
+ambs --no-color --column "ThrownError(" >> ../../rawerrors.txt
+ambs --no-color --column "Abort(" >> ../../rawerrors.txt
+ambs --no-color --column "TypeError(" >> ../../rawerrors.txt
+ambs --no-color --column "UndefinedVarError(" >> ../../rawerrors.txt
+ambs --no-color --column "RestrictedPathError(" >> ../../rawerrors.txt
+ambs --no-color --column "AttrPathNotFound(" >> ../../rawerrors.txt
+ambs --no-color --column "NoPositionInfo(" >> ../../rawerrors.txt
+ambs --no-color --column "UnknownCompressionMethod(" >> ../../rawerrors.txt
+ambs --no-color --column "CompressionError(" >> ../../rawerrors.txt
+ambs --no-color --column "BadHash(" >> ../../rawerrors.txt
+ambs --no-color --column "BadURL(" >> ../../rawerrors.txt
+ambs --no-color --column "UsageError(" >> ../../rawerrors.txt
+ambs --no-color --column "Error(" >> ../../rawerrors.txt
+ambs --no-color --column "SerialisationError(" >> ../../rawerrors.txt
+ambs --no-color --column "EndOfFile(" >> ../../rawerrors.txt
+ambs --no-color --column "Interrupted(" >> ../../rawerrors.txt
+ambs --no-color --column "FormatError(" >> ../../rawerrors.txt
+ambs --no-color --column "ThreadPoolShutDown(" >> ../../rawerrors.txt
+ambs --no-color --column "logWarning(" >> ../../rawerrors.txt
+ambs --no-color --column "logError(" >> ../../rawerrors.txt
 
-sed "s/.(B.\[m//g" ../../meh.txt > ../../wot.txt
-cat ../../wot.txt | grep "printError" -v | grep "MakeError" -v | grep "LocalNoInlineNoReturn" -v > ../../wot2.txt
-sort -u ../../wot2.txt > ../../exceptions2.txt
+sed "s/.(B.\[m//g" ../../rawerrors.txt | grep "printError" -v | grep "MakeError" -v | grep "LocalNoInlineNoReturn" -v | sort -u > ../../errors.txt
 
-rm ../../meh.txt ../../wot.txt
+rm ../../rawerrors.txt 
