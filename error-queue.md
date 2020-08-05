@@ -5,4 +5,4 @@
 
 [Issue #1885](https://github.com/NixOS/nix/issues/1885) - hash mismatch in downloaded path
     Thanks to contributor Domen Kozar!
-    
+ 
