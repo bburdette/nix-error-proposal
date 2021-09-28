@@ -472,6 +472,398 @@ LogEntry==
 	Start=138430679250000000
 	Task=REPL flag - env grokking
 LogEntry==
-	End=138431520042330920
-	Start=138431520042330920
+	End=138431531080000000
+	Start=138431520040000000
 	Task=REPL flag - env grokking
+LogEntry==
+	End=138432276740000000
+	Start=138432262550000000
+	Task=admin
+LogEntry==
+	End=138438360220000000
+	Start=138438344670000000
+	Task=env-count experiment
+LogEntry==
+	End=138438424460000000
+	Start=138438413870000000
+	Task=env-count experiment
+LogEntry==
+	End=138438438210000000
+	Start=138438427930000000
+	Task=env-count experiment
+LogEntry==
+	End=138438467520000000
+	Start=138438464630000000
+	Task=env-count experiment
+LogEntry==
+	End=138439332200000000
+	Start=138439328340000000
+	Task=env-count experiment
+LogEntry==
+	End=138439354830000000
+	Start=138439346150000000
+	Task=env-count experiment
+LogEntry==
+	End=138443562410000000
+	Start=138443549440000000
+	Task=parseing->env code reading
+LogEntry==
+	End=138443587460000000
+	Start=138443584640000000
+	Task=parseing->env code reading
+LogEntry==
+	End=138445335260000000
+	Start=138445319820000000
+	Task=parseing->env code reading
+LogEntry==
+	End=138453041650000000
+	Start=138453021780000000
+	Task=env subclass
+LogEntry==
+	End=138453743930000000
+	Start=138453742390000000
+	Task=env subclass
+LogEntry==
+	End=138453748660000000
+	Start=138453745890000000
+	Task=env subclass
+LogEntry==
+	End=138467786560000000
+	Start=138467782590000000
+	Task=env bindings
+LogEntry==
+	End=138467822840000000
+	Start=138467809660000000
+	Task=env bindings
+LogEntry==
+	End=138468465580000000
+	Start=138468456570000000
+	Task=env bindings
+LogEntry==
+	End=138469342640000000
+	Start=138469329720000000
+	Task=env bindings
+LogEntry==
+	End=138469389500000000
+	Start=138469384200000000
+	Task=env bindings
+LogEntry==
+	End=138469437170000000
+	Start=138469431170000000
+	Task=env bindings
+LogEntry==
+	End=138469450000000000
+	Start=138469443060000000
+	Task=env bindings
+LogEntry==
+	End=138469493100000000
+	Start=138469486810000000
+	Task=env bindings
+LogEntry==
+	End=138474748190000000
+	Start=138474747060000000
+	Task=env bindings
+LogEntry==
+	End=138474754120000000
+	Start=138474749670000000
+	Task=env bindings
+LogEntry==
+	End=138474862410000000
+	Start=138474854690000000
+	Task=env bindings
+LogEntry==
+	End=138474870000000000
+	Start=138474866280000000
+	Task=env bindings
+LogEntry==
+	End=138475409750000000
+	Start=138475399670000000
+	Task=env bindings
+LogEntry==
+	End=138475461450000000
+	Start=138475455930000000
+	Task=env bindings
+LogEntry==
+	End=138478128960000000
+	Start=138478103050000000
+	Task=env bindings
+LogEntry==
+	End=138479209440000000
+	Start=138479183790000000
+	Task=env bindings
+LogEntry==
+	End=138479318870000000
+	Start=138479314980000000
+	Task=env bindings
+LogEntry==
+	End=138479352290000000
+	Start=138479345970000000
+	Task=env bindings
+LogEntry==
+	End=138479358820000000
+	Start=138479355130000000
+	Task=env bindings
+LogEntry==
+	End=138485045390000000
+	Start=138485037370000000
+	Task=env bindings
+LogEntry==
+	End=138485129280000000
+	Start=138485124270000000
+	Task=env bindings
+LogEntry==
+	End=138485954110000000
+	Start=138485946650000000
+	Task=env bindings
+LogEntry==
+	End=138486019950000000
+	Start=138486008630000000
+	Task=env bindings
+LogEntry==
+	End=138486099200000000
+	Start=138486088430000000
+	Task=env bindings
+LogEntry==
+	End=138486143470000000
+	Start=138486128090000000
+	Task=env bindings
+LogEntry==
+	End=138486147690000000
+	Start=138486146910000000
+	Task=env bindings
+LogEntry==
+	End=138486657470000000
+	Start=138486654000000000
+	Task=env bindings
+LogEntry==
+	End=138486671880000000
+	Start=138486665770000000
+	Task=core dump!
+LogEntry==
+	End=138486703190000000
+	Start=138486683650000000
+	Task=core dump!
+LogEntry==
+	End=138486767760000000
+	Start=138486753130000000
+	Task=core dump!
+LogEntry==
+	End=138486815330000000
+	Start=138486809090000000
+	Task=core dump!
+LogEntry==
+	End=138486823170000000
+	Start=138486821710000000
+	Task=core dump!
+LogEntry==
+	End=138486864950000000
+	Start=138486844160000000
+	Task=core dump!
+LogEntry==
+	End=138487439810000000
+	Start=138487433660000000
+	Task=core dump!
+LogEntry==
+	End=138487452910000000
+	Start=138487448270000000
+	Task=core dump!
+LogEntry==
+	End=138491162230000000
+	Start=138491153020000000
+	Task=remove valmaps
+LogEntry==
+	End=138491176130000000
+	Start=138491170790000000
+	Task=remove valmaps
+LogEntry==
+	End=138491183220000000
+	Start=138491181600000000
+	Task=remove valmaps
+LogEntry==
+	End=138491834170000000
+	Start=138491819510000000
+	Task=remove valmaps
+LogEntry==
+	End=138491853380000000
+	Start=138491845360000000
+	Task=remove valmaps
+LogEntry==
+	End=138491884900000000
+	Start=138491881170000000
+	Task=remove valmaps
+LogEntry==
+	End=138491919930000000
+	Start=138491900140000000
+	Task=remove valmaps
+LogEntry==
+	End=138491931920000000
+	Start=138491926370000000
+	Task=remove valmaps
+LogEntry==
+	End=138492008660000000
+	Start=138492004820000000
+	Task=show bindings->pos code
+LogEntry==
+	End=138496464240000000
+	Start=138496457050000000
+	Task=builtins, attrs binding investigation
+LogEntry==
+	End=138496479200000000
+	Start=138496473440000000
+	Task=builtins, attrs binding investigation
+LogEntry==
+	End=138497041420000000
+	Start=138497023650000000
+	Task=builtins, attrs binding investigation
+LogEntry==
+	End=138497134090000000
+	Start=138497123010000000
+	Task=builtins, attrs binding investigation
+LogEntry==
+	End=138497252900000000
+	Start=138497250390000000
+	Task=builtins, attrs binding investigation
+LogEntry==
+	End=138497279700000000
+	Start=138497253940000000
+	Task=builtins, attrs binding investigation
+LogEntry==
+	End=138497993640000000
+	Start=138497975730000000
+	Task=builtins, attrs binding investigation
+LogEntry==
+	End=138498894030000000
+	Start=138498879540000000
+	Task=builtins, attrs binding investigation
+LogEntry==
+	End=138499639910000000
+	Start=138499634060000000
+	Task=builtins, attrs binding investigation
+LogEntry==
+	End=138499665450000000
+	Start=138499659410000000
+	Task=builtins, attrs binding investigation
+LogEntry==
+	End=138499700520000000
+	Start=138499688790000000
+	Task=builtins, attrs binding investigation
+LogEntry==
+	End=138508273100000000
+	Start=138508265530000000
+	Task=builtins, attrs binding investigation
+LogEntry==
+	End=138508321670000000
+	Start=138508315680000000
+	Task=shared-ptr StaticEnv
+LogEntry==
+	End=138508329980000000
+	Start=138508325770000000
+	Task=shared-ptr StaticEnv
+LogEntry==
+	End=138508352220000000
+	Start=138508347980000000
+	Task=shared-ptr StaticEnv
+LogEntry==
+	End=138508499110000000
+	Start=138508482000000000
+	Task=shared-ptr StaticEnv
+LogEntry==
+	End=138508513760000000
+	Start=138508506710000000
+	Task=shared-ptr StaticEnv
+LogEntry==
+	End=138508629700000000
+	Start=138508622860000000
+	Task=shared-ptr StaticEnv
+LogEntry==
+	End=138509100270000000
+	Start=138509082010000000
+	Task=shared-ptr StaticEnv
+LogEntry==
+	End=138509175660000000
+	Start=138509170800000000
+	Task=shared-ptr StaticEnv
+LogEntry==
+	End=138509231880000000
+	Start=138509218560000000
+	Task=shared-ptr StaticEnv
+LogEntry==
+	End=138509253550000000
+	Start=138509238910000000
+	Task=shared-ptr StaticEnv
+LogEntry==
+	End=138510156660000000
+	Start=138510153490000000
+	Task=shared-ptr StaticEnv
+LogEntry==
+	End=138510160390000000
+	Start=138510159170000000
+	Task=shared-ptr StaticEnv
+LogEntry==
+	End=138510170550000000
+	Start=138510161780000000
+	Task=shared-ptr StaticEnv
+LogEntry==
+	End=138510172180000000
+	Start=138510171840000000
+	Task=shared-ptr StaticEnv
+LogEntry==
+	End=138510187100000000
+	Start=138510181090000000
+	Task=shared-ptr StaticEnv
+LogEntry==
+	End=138515305370000000
+	Start=138515298530000000
+	Task=shared-ptr StaticEnv debug
+LogEntry==
+	End=138515325720000000
+	Start=138515313730000000
+	Task=shared-ptr StaticEnv debug
+LogEntry==
+	End=138515339470000000
+	Start=138515331690000000
+	Task=shared-ptr StaticEnv debug
+LogEntry==
+	End=138516021450000000
+	Start=138516016960000000
+	Task=shared-ptr StaticEnv debug
+LogEntry==
+	End=138516165210000000
+	Start=138516151350000000
+	Task=shared-ptr StaticEnv debug
+LogEntry==
+	End=138516188650000000
+	Start=138516180230000000
+	Task=shared-ptr StaticEnv debug
+LogEntry==
+	End=138516215770000000
+	Start=138516198080000000
+	Task=shared-ptr StaticEnv debug
+LogEntry==
+	End=138516286010000000
+	Start=138516264240000000
+	Task=shared-ptr StaticEnv debug
+LogEntry==
+	End=138516852630000000
+	Start=138516840320000000
+	Task=shared-ptr StaticEnv debug
+LogEntry==
+	End=138516890200000000
+	Start=138516884230000000
+	Task=shared-ptr StaticEnv debug
+LogEntry==
+	End=138516900940000000
+	Start=138516891240000000
+	Task=shared-ptr StaticEnv debug
+LogEntry==
+	End=138516933520000000
+	Start=138516926730000000
+	Task=shared-ptr StaticEnv debug
+LogEntry==
+	End=138521068790000000
+	Start=138521060650000000
+	Task=shared-ptr StaticEnv show vars
+LogEntry==
+	End=138521162860000000
+	Start=138521151700000000
+	Task=shared-ptr StaticEnv show vars
