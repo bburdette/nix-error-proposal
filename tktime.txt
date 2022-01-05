@@ -867,3 +867,63 @@ LogEntry==
 	End=138521162860000000
 	Start=138521151700000000
 	Task=shared-ptr StaticEnv show vars
+LogEntry==
+	End=138524758430000000
+	Start=138524751290000000
+	Task=shared-ptr StaticEnv show vars
+LogEntry==
+	End=138524802740000000
+	Start=138524791050000000
+	Task=shared-ptr StaticEnv show vars
+LogEntry==
+	End=138532466040000000
+	Start=138532457700000000
+	Task=shared-ptr StaticEnv show vars
+LogEntry==
+	End=138532554790000000
+	Start=138532541360000000
+	Task=shared-ptr StaticEnv show vars
+LogEntry==
+	End=138532582970000000
+	Start=138532561210000000
+	Task=shared-ptr StaticEnv show vars
+LogEntry==
+	End=138532611330000000
+	Start=138532605940000000
+	Task=shared-ptr StaticEnv show vars
+LogEntry==
+	End=138532626820000000
+	Start=138532617670000000
+	Task=shared-ptr StaticEnv show vars
+LogEntry==
+	End=138532637040000000
+	Start=138532627660000000
+	Task=shared-ptr StaticEnv show vars
+LogEntry==
+	End=138532778850000000
+	Start=138532769780000000
+	Task=shared-ptr StaticEnv show vars
+LogEntry==
+	End=138533444370000000
+	Start=138533436700000000
+	Task=shared-ptr StaticEnv show vars
+LogEntry==
+	End=138542054330000000
+	Start=138542035750000000
+	Task=exploratory PR
+LogEntry==
+	End=138542088860000000
+	Start=138542056390000000
+	Task=exploratory PR
+LogEntry==
+	End=138542179550000000
+	Start=138542167830000000
+	Task=exploratory PR
+LogEntry==
+	End=138557506910000000
+	Start=138557502700000000
+	Task=exploratory PR
+LogEntry==
+	End=138557570410000000
+	Start=138557560160000000
+	Task=exploratory PR
